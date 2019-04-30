@@ -37,7 +37,7 @@ class LocalizeStrings: LocalizeCommonProtocol {
         let tableName = tableName ?? fileName
 
         // First, try to find translation in currentLanguage.
-        if let localized = localize(key: key, tableName: tableName, lang: currentLanguage) {
+        if let localized = localize(key: key, tableName: tableName, lang: currentLanguage), !localized.isEmpty {
             return localized
         }
 
@@ -46,8 +46,9 @@ class LocalizeStrings: LocalizeCommonProtocol {
         if currentLanguage.contains("-"),
             let lang = currentLanguage.split(separator: "-").first,
             let localized = localize(key: key, tableName: tableName, lang: String(lang)) {
-
-            return localized
+            if !localized.isEmpty {
+                return localized
+            }
         }
 
         // Fall back to the defaultLange - "en" by default, but could have been changed.
